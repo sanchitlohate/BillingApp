@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Welcome to Billing App Dashboard</h1>
+  <p>Login successful 🎉</p>
+  <button onclick="logout()">Logout</button>
+
+</body>
+<script>
+function logout() {
+  fetch('/logout')
+    .then(() => {
+      window.location.href = '/login.html';
+    });
+}
+</script>
+
+</html>
