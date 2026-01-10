@@ -12,8 +12,9 @@ app.use(express.static('public'));
 
 // simple test route
 app.get('/', (req, res) => {
-    res.send('Server is running');
+  res.sendFile(__dirname + '/public/login.html');
 });
+
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
