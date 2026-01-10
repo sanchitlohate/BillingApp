@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
 });
 
+
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
