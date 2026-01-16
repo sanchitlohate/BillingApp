@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+</head>
+<body>
+
+<h2>Add Product</h2>
+
+<input id="name" placeholder="Product Name"><br><br>
+<input id="price" type="number" placeholder="Price"><br><br>
+<input id="gst" type="number" placeholder="GST %"><br><br>
+<button onclick="addProduct()">Add Product</button>
+
+<h2>Products List</h2>
+<ul id="productList"></ul>
+
+<script>
+function addProduct() {
+  const name = document.getElementById('name').value;
+  const price = document.getElementById('price').value;
+  const gst = document.getElementById('gst').value;
+
+  fetch('/add-product', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, price, gst })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+    loadProducts();
+  });
+}
+
+function loadProducts() {
+  fetch('/products')
+    .then(res => res.json())
+    .then(products => {
+      const list = document.getElementById('productList');
+      list.innerHTML = '';
+      products.forEach(p => {
+        list.innerHTML += `<li>${p.name} - ₹${p.price} + ${p.gst}% GST</li>`;
+      });
+    });
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>

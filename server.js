@@ -106,6 +106,13 @@ app.post('/add-product', (req, res) => {
 
   res.json({ message: 'Product added successfully' });
 });
+app.get('/products', (req, res) => {
+  const filePath = path.join(__dirname, 'data', 'products.json');
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const products = JSON.parse(data);
+
+  res.json(products);
+});
 
 
 
