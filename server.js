@@ -69,6 +69,20 @@ app.post('/products', (req, res) => {
     message: 'Product added',
     product: newProduct
   });
+  // GET ALL PRODUCTS
+app.get('/products', (req, res) => {
+  const filePath = path.join(__dirname, 'data', 'products.json');
+
+  if (!fs.existsSync(filePath)) {
+    return res.json([]);
+  }
+
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const products = data ? JSON.parse(data) : [];
+
+  res.json(products);
+});
+
 });
 // VIEW PRODUCTS
 app.get('/products', (req, res) => {
