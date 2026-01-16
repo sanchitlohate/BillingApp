@@ -80,6 +80,34 @@ app.get('/products', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+const fs = require('fs');
+const path = require('path');
+
+app.post('/add-product', (req, res) => {
+  const { name, price, gst } = req.body;
+
+  if (!name || !price || !gst) {
+    return res.status(400).json({ message: 'All fields required' });
+  }
+
+  const filePath = path.join(__dirname, 'data', 'products.json');
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const products = JSON.parse(data);
+
+  const newProduct = {
+    id: Date.now(),
+    name,
+    price,
+    gst
+  };
+
+  products.push(newProduct);
+  fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
+
+  res.json({ message: 'Product added successfully' });
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
