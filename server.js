@@ -127,6 +127,26 @@ app.get('/products', (req, res) => {
 
   res.json(products);
 });
+app.post('/add-product', (req, res) => {
+  const { name, price, gst } = req.body;
+
+  const filePath = path.join(__dirname, 'data', 'products.json');
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const products = JSON.parse(data);
+
+  const newProduct = {
+    id: products.length + 1,
+    name,
+    price,
+    gst
+  };
+
+  products.push(newProduct);
+
+  fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
+
+  res.json({ success: true, message: 'Product added successfully' });
+});
 
 
 
