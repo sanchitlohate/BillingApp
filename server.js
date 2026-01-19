@@ -94,8 +94,6 @@ app.get('/products', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-const fs = require('fs');
-const path = require('path');
 
 app.post('/add-product', (req, res) => {
   const { name, price, gst } = req.body;
