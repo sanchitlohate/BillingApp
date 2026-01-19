@@ -1,40 +1,35 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-let isLoggedIn = false;
-
 
 const app = express();
-app.use(express.json());
+let isLoggedIn = false;
 
+app.use(express.json());
 app.use(express.static('public'));
 
-
-// simple test route
+// HOME
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/login.html');
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-
+// LOGIN
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
+  const usersFile = path.join(__dirname, 'data', 'users.json');
 
-  const usersFilePath = path.join(__dirname, 'data', 'users.json');
-  const usersData = fs.readFileSync(usersFilePath, 'utf-8');
-  const users = JSON.parse(usersData);
-
-  const user = users.find(
-    u => u.email === email && u.password === password
-  );
+  const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
+  const user = users.find(u => u.email === email && u.password === password);
 
   if (user) {
-  isLoggedIn = true;
-  res.json({ success: true, message: 'Login successful' });
-}
- else {
-    res.status(401).json({ success: false, message: 'Invalid email or password' });
+    isLoggedIn = true;
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false });
   }
 });
+
+// DASHBOARD
 app.get('/dashboard', (req, res) => {
   if (isLoggedIn) {
     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
@@ -42,34 +37,14 @@ app.get('/dashboard', (req, res) => {
     res.redirect('/login.html');
   }
 });
+
+// LOGOUT
 app.get('/logout', (req, res) => {
   isLoggedIn = false;
   res.redirect('/login.html');
 });
-// ADD PRODUCT
-app.post('/products', (req, res) => {
-  const { name, price, gst } = req.body;
 
-  const filePath = path.join(__dirname, 'data', 'products.json');
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const products = JSON.parse(data);
-
-  const newProduct = {
-    id: products.length + 1,
-    name,
-    price,
-    gst
-  };
-
-  products.push(newProduct);
-  fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
-
-  res.json({
-    success: true,
-    message: 'Product added',
-    product: newProduct
-  });
-  // GET ALL PRODUCTS
+// GET PRODUCTS
 app.get('/products', (req, res) => {
   const filePath = path.join(__dirname, 'data', 'products.json');
 
@@ -78,23 +53,10 @@ app.get('/products', (req, res) => {
   }
 
   const data = fs.readFileSync(filePath, 'utf-8');
-  const products = data ? JSON.parse(data) : [];
-
-  res.json(products);
+  res.json(data ? JSON.parse(data) : []);
 });
 
-});
-// VIEW PRODUCTS
-app.get('/products', (req, res) => {
-  const filePath = path.join(__dirname, 'data', 'products.json');
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const products = JSON.parse(data);
-
-  res.json(products);
-});
-
-const PORT = process.env.PORT || 3000;
-
+// ADD PRODUCT
 app.post('/add-product', (req, res) => {
   const { name, price, gst } = req.body;
 
@@ -103,8 +65,7 @@ app.post('/add-product', (req, res) => {
   }
 
   const filePath = path.join(__dirname, 'data', 'products.json');
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const products = JSON.parse(data);
+  const products = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
   const newProduct = {
     id: Date.now(),
@@ -116,39 +77,11 @@ app.post('/add-product', (req, res) => {
   products.push(newProduct);
   fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
 
-  res.json({ message: 'Product added successfully' });
-});
-app.get('/products', (req, res) => {
-  const filePath = path.join(__dirname, 'data', 'products.json');
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const products = JSON.parse(data);
-
-  res.json(products);
-});
-app.post('/add-product', (req, res) => {
-  const { name, price, gst } = req.body;
-
-  const filePath = path.join(__dirname, 'data', 'products.json');
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const products = JSON.parse(data);
-
-  const newProduct = {
-    id: products.length + 1,
-    name,
-    price,
-    gst
-  };
-
-  products.push(newProduct);
-
-  fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
-
-  res.json({ success: true, message: 'Product added successfully' });
+  res.json({ success: true, product: newProduct });
 });
 
-
-
+// START SERVER
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
