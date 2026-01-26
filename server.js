@@ -25,9 +25,13 @@ app.post('/login', (req, res) => {
     isLoggedIn = true;
     res.json({ success: true });
   } else {
-    res.status(401).json({ success: false });
+    res.status(401).json({
+      success: false,
+      message: "Invalid email or password"
+    });
   }
 });
+
 
 // DASHBOARD
 app.get('/dashboard', (req, res) => {
