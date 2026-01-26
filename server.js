@@ -6,7 +6,8 @@ const app = express();
 let isLoggedIn = false;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // HOME
 app.get('/', (req, res) => {
@@ -16,18 +17,29 @@ app.get('/', (req, res) => {
 // LOGIN
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const usersFile = path.join(__dirname, 'data', 'users.json');
 
-  const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
-  const user = users.find(u => u.email === email && u.password === password);
+  const usersFilePath = path.join(__dirname, 'data', 'users.json');
+
+  if (!fs.existsSync(usersFilePath)) {
+    return res.status(500).json({ success: false, message: 'Users file missing' });
+  }
+
+  const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf-8'));
+
+  const user = users.find(
+    u => u.email === email && u.password === password
+  );
 
   if (user) {
     isLoggedIn = true;
-    res.json({ success: true });
+    return res.json({
+      success: true,
+      message: 'Login successful'
+    });
   } else {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
-      message: "Invalid email or password"
+      message: 'Invalid email or password'
     });
   }
 });
