@@ -193,3 +193,57 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   cursor: pointer;
 }
+
+.invoice-container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.invoice-section {
+  margin-bottom: 15px;
+}
+
+.invoice-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.invoice-section input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.product-row input {
+  padding: 8px;
+}
+
+.add-btn, .save-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-btn:hover, .save-btn:hover {
+  background: #1e40af;
+}
+
+.summary {
+  margin-top: 20px;
+}
