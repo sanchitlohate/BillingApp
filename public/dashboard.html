@@ -6,20 +6,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dashboard-body">
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">Dashboard</div>
+
+  <div class="topbar-right">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</header>
 
   <div class="dashboard-container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <h2>BillingApp</h2>
-      <nav>
-        <a href="#" class="active">Dashboard</a>
-        <a href="#">Customers</a>
-        <a href="#">Products</a>
-        <a href="#">Invoices</a>
-        <a href="/logout">Logout</a>
-      </nav>
-    </aside>
+   <!-- SIDEBAR -->
+<aside class="sidebar">
+  <h2>BillingApp</h2>
+  <nav>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Customers</a>
+    <a href="#">Products</a>
+    <a href="#">Invoices</a>
+  </nav>
+</aside>
+
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
